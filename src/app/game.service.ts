@@ -13,6 +13,7 @@ export enum Mark {
 export class GameService {
   cells$ = new BehaviorSubject<(Mark | '')[]>([...Array(9).fill('')]);
   winner$ = new BehaviorSubject<Mark | ''>('');
+  isBotTurn$ = new BehaviorSubject<boolean>(false);
   private winningLines = [
     [0, 1, 2],
     [3, 4, 5],
@@ -24,10 +25,13 @@ export class GameService {
     [2, 4, 6],
   ];
 
-  constructor() {}
-
   get cells() {
     return this.cells$.value;
+  }
+
+  resetGame() {
+    this.cells$.next(Array(9).fill(''));
+    this.winner$.next('');
   }
 
   registerMove(index: number, value: Mark) {
@@ -43,7 +47,33 @@ export class GameService {
     if (winner) {
       console.log(`Winner is ${winner}`);
       this.winner$.next(winner);
+      this.isBotTurn$.next(false);
+      return;
     }
+
+    if (areAllValuesPresent(this.cells)) {
+      return;
+    }
+
+    // register bot move
+    if (value === Mark.X) {
+      console.log('bot thinking...');
+      this.isBotTurn$.next(true);
+      setTimeout(() => {
+        this.registerBotMove();
+        this.isBotTurn$.next(false);
+      }, 2000);
+    }
+  }
+
+  private registerBotMove() {
+    const emptyCellIndexes = this.cells
+      .map((item, index) => !item && index)
+      .filter(Boolean) as number[];
+    const randomizedIndex =
+      emptyCellIndexes[Math.floor(Math.random() * emptyCellIndexes.length)];
+
+    this.registerMove(randomizedIndex, Mark.O);
   }
 
   private getWinner(): Mark | '' {

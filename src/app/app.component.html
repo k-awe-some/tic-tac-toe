@@ -1,3 +1,21 @@
 <h1>Tic Tac Toe</h1>
 
+<p>
+  <ng-container *ngIf="winner$ | async; let winner; else: gameInProgress">
+    <ng-container *ngIf="winner === Mark.X">
+      Congratulations! You won!
+    </ng-container>
+    <ng-container *ngIf="winner === Mark.O"> Our Bot won! </ng-container>
+  </ng-container>
+
+  <ng-template #gameInProgress>
+    <ng-container *ngIf="isBotTurn$ | async; else humanTurn">
+      Bot is thinking... (O)
+    </ng-container>
+    <ng-template #humanTurn> Your turn! (X) </ng-template>
+  </ng-template>
+</p>
+
 <app-game-grid></app-game-grid>
+
+<button data-test="reset-button" (click)="resetGame()">Reset game</button>
