@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
+import { areAllValuesPresent } from './game.util';
 
 export enum Mark {
   X = 'X',
@@ -51,9 +52,7 @@ export class GameService {
       const [x, y, z] = line;
 
       // if cell values exist at these indexes
-      if (
-        this.areAllValuesPresent([this.cells[x], this.cells[y], this.cells[z]])
-      ) {
+      if (areAllValuesPresent([this.cells[x], this.cells[y], this.cells[z]])) {
         // if matching, return winner
         if (
           this.cells[x] === this.cells[y] &&
@@ -68,10 +67,5 @@ export class GameService {
     }
 
     return '';
-  }
-
-  // TODO: move to helper
-  private areAllValuesPresent(arr: (Mark | '')[]): boolean {
-    return arr.every((item) => item);
   }
 }
