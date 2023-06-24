@@ -1,0 +1,8 @@
+<button
+  *ngFor="let value of cells$ | async; let i = index"
+  (click)="registerHumanMove(i)"
+  [disabled]="(winner$ | async) || value"
+  class="cell"
+>
+  {{ value }}
+</button>
