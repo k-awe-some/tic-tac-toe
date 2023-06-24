@@ -1,9 +1,17 @@
-<button
-  *ngFor="let value of cells$ | async; let i = index"
-  (click)="registerHumanMove(i)"
-  [disabled]="(winner$ | async) || value"
-  class="cell"
+<ng-container
+  *ngIf="{
+    cells: cells$ | async,
+    verdict: (verdict$ | async),
+    isBotTurn: isBotTurn$ | async
+  } as ctx"
 >
-  {{ i }}
-  {{ value }}
-</button>
+  <button
+    *ngFor="let value of ctx.cells; let i = index"
+    (click)="registerHumanMove(i)"
+    [disabled]="ctx.verdict || ctx.isBotTurn || value"
+    [ngClass]="{ disabled: ctx.verdict || ctx.isBotTurn }"
+    class="cell"
+  >
+    {{ value }}
+  </button>
+</ng-container>

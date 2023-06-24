@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { GameService, Mark } from './game.service';
+import { GameService } from './game.service';
 
 @Component({
   selector: 'app-root',
@@ -8,8 +8,7 @@ import { GameService, Mark } from './game.service';
 })
 export class AppComponent {
   isBotTurn$ = this.gameService.isBotTurn$;
-  winner$ = this.gameService.winner$;
-  readonly Mark = Mark;
+  verdict$ = this.gameService.verdict$;
 
   constructor(private gameService: GameService) {}
 

@@ -36,13 +36,13 @@ describe('GameService', () => {
     it('should define winner if a matching line is found', () => {
       service.cells$.next(currentCells);
       service.registerMove(0, Mark.X);
-      expect(service.winner$.value).toEqual('X');
+      expect(service.verdict$.value).toEqual('Congratulations, you won!');
     });
 
     it('should not define winner if no matching line is found', () => {
       service.cells$.next(currentCells);
       service.registerMove(7, Mark.X);
-      expect(service.winner$.value).toEqual('');
+      expect(service.verdict$.value).toEqual('');
     });
 
     it('should register bot move after human move', () => {
@@ -74,9 +74,9 @@ describe('GameService', () => {
       expect(areAllValuesPresent(service.cells)).toBeFalse();
     });
 
-    it('should reset winner value', () => {
+    it('should reset verdict value', () => {
       service.resetGame();
-      expect(service.winner$.value).toBeFalsy();
+      expect(service.verdict$.value).toBeFalsy();
     });
   });
 });

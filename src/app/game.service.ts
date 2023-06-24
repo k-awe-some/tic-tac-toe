@@ -12,7 +12,7 @@ export enum Mark {
 })
 export class GameService {
   cells$ = new BehaviorSubject<(Mark | '')[]>([...Array(9).fill('')]);
-  winner$ = new BehaviorSubject<Mark | ''>('');
+  verdict$ = new BehaviorSubject<string>('');
   isBotTurn$ = new BehaviorSubject<boolean>(false);
   private winningLines = [
     [0, 1, 2],
@@ -31,7 +31,7 @@ export class GameService {
 
   resetGame() {
     this.cells$.next(Array(9).fill(''));
-    this.winner$.next('');
+    this.verdict$.next('');
   }
 
   registerMove(index: number, value: Mark) {
@@ -45,8 +45,13 @@ export class GameService {
     // check for winner
     const winner = this.getWinner();
     if (winner) {
-      console.log(`Winner is ${winner}`);
-      this.winner$.next(winner);
+      this.verdict$.next(
+        `${
+          winner === Mark.X
+            ? 'Congratulations, you won!'
+            : 'Good luck next time!'
+        }`
+      );
       this.isBotTurn$.next(false);
       return;
     }

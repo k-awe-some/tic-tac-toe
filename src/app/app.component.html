@@ -1,11 +1,8 @@
 <h1>Tic Tac Toe</h1>
 
 <p>
-  <ng-container *ngIf="winner$ | async; let winner; else: gameInProgress">
-    <ng-container *ngIf="winner === Mark.X">
-      Congratulations! You won!
-    </ng-container>
-    <ng-container *ngIf="winner === Mark.O"> Our Bot won! </ng-container>
+  <ng-container *ngIf="verdict$ | async; let verdict; else: gameInProgress">
+    {{ verdict }}
   </ng-container>
 
   <ng-template #gameInProgress>

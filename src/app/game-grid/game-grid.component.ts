@@ -11,7 +11,8 @@ import { GameService, Mark } from '../game.service';
 })
 export class GameGridComponent {
   cells$ = this.gameService.cells$;
-  winner$ = this.gameService.winner$;
+  verdict$ = this.gameService.verdict$;
+  isBotTurn$ = this.gameService.isBotTurn$;
 
   constructor(private gameService: GameService) {}
 
