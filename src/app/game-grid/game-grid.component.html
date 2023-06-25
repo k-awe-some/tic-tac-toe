@@ -1,17 +1,20 @@
-<ng-container
+<div
   *ngIf="{
     cells: cells$ | async,
     verdict: (verdict$ | async),
     isBotTurn: isBotTurn$ | async
   } as ctx"
+  class="grid grid-cols-3 border border-rose-600"
 >
   <button
     *ngFor="let value of ctx.cells; let i = index"
     (click)="registerHumanMove(i)"
     [disabled]="ctx.verdict || ctx.isBotTurn || value"
-    [ngClass]="{ disabled: ctx.verdict || ctx.isBotTurn }"
-    class="cell"
+    [ngClass]="{ 'cursor-not-allowed': ctx.verdict || ctx.isBotTurn }"
+    class="aspect-square border border-rose-600"
   >
-    {{ value }}
+    <span class="text-blue-950 text-4xl sm:text-5xl md:text-8xl">{{
+      value
+    }}</span>
   </button>
-</ng-container>
+</div>
