@@ -7,9 +7,6 @@ import { GameService } from './game.service';
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent {
-  isBotTurn$ = this.gameService.isBotTurn$;
-  verdict$ = this.gameService.verdict$;
-
   constructor(private gameService: GameService) {}
 
   resetGame() {

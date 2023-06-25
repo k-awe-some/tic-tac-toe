@@ -3,6 +3,7 @@ import { By } from '@angular/platform-browser';
 import { AppComponent } from './app.component';
 import { GameGridComponent } from './game-grid/game-grid.component';
 import { GameService } from './game.service';
+import { VerdictComponent } from './verdict/verdict.component';
 
 describe('AppComponent', () => {
   let component: AppComponent;
@@ -11,7 +12,7 @@ describe('AppComponent', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [AppComponent],
-      imports: [GameGridComponent],
+      imports: [GameGridComponent, VerdictComponent],
     });
 
     fixture = TestBed.createComponent(AppComponent);

@@ -30,7 +30,7 @@ describe('GameService', () => {
 
     it('should add mark value into the correct cell', () => {
       service.registerMove(5, Mark.O);
-      expect(service.cells[5]).toEqual('O');
+      expect(service.cells$.value[5]).toEqual('O');
     });
 
     it('should define winner if a matching line is found', () => {
@@ -42,7 +42,7 @@ describe('GameService', () => {
     it('should not define winner if no matching line is found', () => {
       service.cells$.next(currentCells);
       service.registerMove(7, Mark.X);
-      expect(service.verdict$.value).toEqual('');
+      expect(service.verdict$.value).toEqual('Bot is thinking... (O)');
     });
 
     it('should register bot move after human move', () => {
@@ -71,13 +71,27 @@ describe('GameService', () => {
   describe('#resetGame', () => {
     it('should reset cell values', () => {
       service.resetGame();
-      expect(areAllValuesPresent(service.cells)).toBeFalse();
+      expect(areAllValuesPresent(service.cells$.value)).toBeFalse();
     });
 
     it('should reset verdict value', () => {
       service.resetGame();
-      expect(service.verdict$.value).toBeFalsy();
+      expect(service.verdict$.value).toEqual('You are player X');
+    });
+
+    it('should reset winner value', () => {
+      service.resetGame();
+      expect(service.winner$.value).toEqual('');
+    });
+
+    it('should reset winning line value', () => {
+      service.resetGame();
+      expect(service.winningLineResult$.value.length).toEqual(0);
+    });
+
+    it('should reset bot turn value', () => {
+      service.resetGame();
+      expect(service.isBotTurn$.value).toBeFalse();
     });
   });
 });
-// 0 4 7 6 2

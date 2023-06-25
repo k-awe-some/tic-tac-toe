@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { GameService, Mark } from '../game.service';
 
 @Component({
@@ -9,15 +9,21 @@ import { GameService, Mark } from '../game.service';
   templateUrl: './game-grid.component.html',
   styleUrls: ['./game-grid.component.scss'],
 })
-export class GameGridComponent {
+export class GameGridComponent implements OnInit {
   cells$ = this.gameService.cells$;
-  verdict$ = this.gameService.verdict$;
+  winner$ = this.gameService.winner$;
   isBotTurn$ = this.gameService.isBotTurn$;
+  winningLineResult$ = this.gameService.winningLineResult$;
+
+  readonly Mark = Mark;
 
   constructor(private gameService: GameService) {}
 
+  ngOnInit(): void {
+    this.gameService.resetGame();
+  }
+
   registerHumanMove(index: number) {
-    console.log(`Register X into cells @ index ${index}!`);
     this.gameService.registerMove(index, Mark.X);
   }
 }

@@ -1,20 +1,26 @@
 <div
   *ngIf="{
     cells: cells$ | async,
-    verdict: (verdict$ | async),
-    isBotTurn: isBotTurn$ | async
+    winner: (winner$ | async),
+    isBotTurn: isBotTurn$ | async,
+    winningLineResult: winningLineResult$ | async
   } as ctx"
   class="grid grid-cols-3 border border-rose-600"
 >
   <button
     *ngFor="let value of ctx.cells; let i = index"
     (click)="registerHumanMove(i)"
-    [disabled]="ctx.verdict || ctx.isBotTurn || value"
-    [ngClass]="{ 'cursor-not-allowed': ctx.verdict || ctx.isBotTurn }"
-    class="aspect-square border border-rose-600"
+    [disabled]="ctx.winner || ctx.isBotTurn || value"
+    [ngClass]="{
+      'cursor-not-allowed': ctx.winner || ctx.isBotTurn,
+      'bg-rose-600 text-white':
+        ctx.winner === Mark.O && ctx.winningLineResult?.includes(i),
+      'bg-cyan-300': ctx.winner === Mark.X && ctx.winningLineResult?.includes(i)
+    }"
+    class="aspect-square border border-rose-600 text-blue-950"
   >
-    <span class="text-blue-950 text-4xl sm:text-5xl md:text-8xl">{{
-      value
-    }}</span>
+    <span class="text-4xl sm:text-5xl md:text-8xl">
+      {{ value }}
+    </span>
   </button>
 </div>
