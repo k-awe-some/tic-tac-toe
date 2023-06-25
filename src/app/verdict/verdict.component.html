@@ -1,6 +1,10 @@
 <p
   data-test="verdict"
   class="text-center text-blue-950 text-lg sm:text-2xl lg:text-3xl m-4 sm:m-6"
+  [ngClass]="{
+    'text-rose-600': (winner$ | async) === Mark.O,
+    'text-cyan-500': (winner$ | async) === Mark.X
+  }"
 >
   {{ verdict$ | async }}
 </p>

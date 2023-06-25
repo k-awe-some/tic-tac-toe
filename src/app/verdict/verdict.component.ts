@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { GameService } from '../game.service';
+import { GameService, Mark } from '../game.service';
 
 @Component({
   selector: 'app-verdict',
@@ -10,8 +10,10 @@ import { GameService } from '../game.service';
   imports: [CommonModule],
 })
 export class VerdictComponent {
-  isBotTurn$ = this.gameService.isBotTurn$;
+  winner$ = this.gameService.winner$;
   verdict$ = this.gameService.verdict$;
+
+  readonly Mark = Mark;
 
   constructor(private gameService: GameService) {}
 }

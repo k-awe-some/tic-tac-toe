@@ -23,7 +23,11 @@
   <button
     data-test="reset-button"
     (click)="resetGame()"
-    class="bg-yellow-300 text-rose-600 font-medium tracking-wider px-12 py-2 sm:py-3 w-full sm:w-auto mt-5 sm:mt-8 text-lg sm:text-xl lg:text-2xl"
+    class="bg-yellow-300 text-rose-600 font-medium tracking-wider px-12 py-2 sm:py-3 w-full sm:w-auto mt-6 sm:mt-9 text-lg sm:text-xl lg:text-2xl"
+    [ngClass]="{
+      'animate-bounce':
+        (winner$ | async) || (verdict$ | async)?.includes('draw')
+    }"
   >
     Reset game
   </button>
