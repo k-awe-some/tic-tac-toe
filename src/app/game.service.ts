@@ -77,13 +77,22 @@ export class GameService {
     this.verdict$.next('Bot is thinking... (O)');
 
     setTimeout(() => {
-      this.registerMove(this.getRandomizedIndex(), Mark.O);
+      const nextIndex = this.getOptimalIndex();
+      this.registerMove(nextIndex, Mark.O);
       this.isBotTurn$.next(false);
 
       if (!this.winner$.value) {
         this.verdict$.next('Your turn (X)');
       }
     }, 2000);
+  }
+
+  private getOptimalIndex(): number {
+    return (
+      this.getLastIndexOfNearWin(Mark.O) ??
+      this.getLastIndexOfNearWin(Mark.X) ??
+      this.getRandomizedIndex()
+    );
   }
 
   private getRandomizedIndex(): number {
@@ -93,6 +102,24 @@ export class GameService {
     return emptyCellIndexes[
       Math.floor(Math.random() * emptyCellIndexes.length)
     ];
+  }
+
+  private getLastIndexOfNearWin(value: Mark): number | null {
+    for (const line of this.winningLines) {
+      const [x, y, z] = line;
+      const currentLine = [this.cells[x], this.cells[y], this.cells[z]];
+      const existingValue = currentLine.filter(Boolean);
+
+      if (
+        existingValue.length === 2 &&
+        existingValue[0] === value &&
+        existingValue[1] === value
+      ) {
+        return line[currentLine.indexOf('')];
+      }
+    }
+
+    return null;
   }
 
   private getWinner(): Mark | '' {
