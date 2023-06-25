@@ -1,18 +1,35 @@
-<h1>Tic Tac Toe</h1>
+<h1
+  class="absolute -left-4 top-0 flex items-start font-extrabold -skew-x-[20deg] text-rose-600 text-center text-3xl sm:text-7xl"
+>
+  <div
+    class="bg-rose-600 text-cyan-300 tracking-widest flex flex-col items-end justify-center pr-1 leading-3 sm:leading-6 text-xs sm:text-2xl h-9 sm:h-[4.5rem] pl-[50%] sm:pl-[35%]"
+  >
+    <span class="w-min text-right">just another</span>
+  </div>
 
-<p>
-  <ng-container *ngIf="verdict$ | async; let verdict; else: gameInProgress">
-    {{ verdict }}
-  </ng-container>
+  <span
+    class="text-white bg-gradient-to-l from-white from-50% to-rose-600 to-50% [text-shadow:_-2px_3px_0_rgb(225_29_72)]"
+  >
+    T
+  </span>
+  <span class="text-left whitespace-nowrap">IC TAC TOE</span>
+</h1>
 
-  <ng-template #gameInProgress>
-    <ng-container *ngIf="isBotTurn$ | async; else humanTurn">
-      Bot is thinking... (O)
+<div class="w-fit ml-auto mr-auto mt-12 sm:mt-24">
+  <p class="text-center m-4 sm:m-6">
+    <ng-container *ngIf="verdict$ | async; let verdict; else: gameInProgress">
+      {{ verdict }}
     </ng-container>
-    <ng-template #humanTurn> Your turn! (X) </ng-template>
-  </ng-template>
-</p>
 
-<app-game-grid></app-game-grid>
+    <ng-template #gameInProgress>
+      <ng-container *ngIf="isBotTurn$ | async; else humanTurn">
+        Bot is thinking... (O)
+      </ng-container>
+      <ng-template #humanTurn> Your turn! (X) </ng-template>
+    </ng-template>
+  </p>
 
-<button data-test="reset-button" (click)="resetGame()">Reset game</button>
+  <app-game-grid></app-game-grid>
+
+  <button data-test="reset-button" (click)="resetGame()">Reset game</button>
+</div>

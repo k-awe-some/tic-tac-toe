@@ -24,7 +24,7 @@ describe('AppComponent', () => {
 
   it('should render game title', () => {
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('h1')?.textContent).toContain('Tic Tac Toe');
+    expect(compiled.querySelector('h1')?.textContent).toContain('TIC TAC TOE');
   });
 
   it('should render game grid', () => {
