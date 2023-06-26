@@ -14,47 +14,46 @@
 </h1>
 
 <div
-  *ngIf="!(cells$ | async)?.length; else resetButtons"
-  class="w-3/5 sm:w-1/2 lg:w-1/3 xl:2xl:w-1/4 text-center ml-auto mr-auto mt-36 sm:mt-32 lg:mt-44"
+  class="w-3/5 sm:w-1/2 lg:w-1/3 xl:2xl:w-1/4 text-center ml-auto mr-auto mb-24 sm:mt-32"
 >
-  <app-button data-test="human-first-button" (click)="resetGame()">
-    I'll go first
-  </app-button>
-  <app-button
-    data-test="bot-first-button"
-    [primary]="true"
-    (click)="resetGameBotFirst()"
-  >
-    I feel like being challenged
-  </app-button>
-</div>
-
-<ng-template #resetButtons>
   <div
-    class="w-3/5 sm:w-1/2 lg:w-1/3 xl:2xl:w-1/4 text-center ml-auto mr-auto mt-28 sm:mt-32 lg:mt-44"
+    *ngIf="!(cells$ | async)?.length; else playground"
+    class="mt-28 lg:mt-44"
   >
-    <app-verdict></app-verdict>
-
-    <app-game-grid></app-game-grid>
-
-    <br />
-
-    <app-button data-test="reset-human-first-button" (click)="resetGame()">
-      Reset
-      <br />
-      (You go first)
+    <app-button data-test="human-first-button" (click)="resetGame()">
+      I'll go first
     </app-button>
     <app-button
-      data-test="reset-bot-first-button"
+      data-test="bot-first-button"
       [primary]="true"
       (click)="resetGameBotFirst()"
-      [animateBounce]="
-        !!(winner$ | async) || !!(verdict$ | async)?.includes('draw')
-      "
     >
-      Reset
-      <br />
-      (Bot goes first)
+      I feel like being challenged
     </app-button>
   </div>
-</ng-template>
+
+  <ng-template #playground>
+    <div class="mt-24 lg:mt-36">
+      <app-verdict></app-verdict>
+      <app-game-grid></app-game-grid>
+      <br />
+      <app-button data-test="reset-human-first-button" (click)="resetGame()">
+        Reset
+        <br />
+        (You go first)
+      </app-button>
+      <app-button
+        data-test="reset-bot-first-button"
+        [primary]="true"
+        (click)="resetGameBotFirst()"
+        [animateBounce]="
+          !!(winner$ | async) || !!(verdict$ | async)?.includes('draw')
+        "
+      >
+        Reset
+        <br />
+        (Bot goes first)
+      </app-button>
+    </div>
+  </ng-template>
+</div>
