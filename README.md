@@ -1,4 +1,4 @@
-# TicTacToe
+# Just Another Tic-Tac-Toe
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 16.1.0.
 
@@ -13,3 +13,9 @@ Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The appli
 ## Running unit tests
 
 Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+
+## Potential Improvements
+
+- Implement the Minimax algorithm to smarten up the bot player even more
+- Implement score keeping and allow records to be cached and cleared
+- Enhance UX (storytelling, animations, etc)
