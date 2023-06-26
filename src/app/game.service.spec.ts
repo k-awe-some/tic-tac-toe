@@ -76,7 +76,7 @@ describe('GameService', () => {
 
     it('should reset verdict value', () => {
       service.resetGame();
-      expect(service.verdict$.value).toEqual('You are player X');
+      expect(service.verdict$.value).toEqual('Your turn (X)');
     });
 
     it('should reset winner value', () => {

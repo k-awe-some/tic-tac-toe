@@ -7,6 +7,7 @@ import { GameService } from './game.service';
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent {
+  cells$ = this.gameService.cells$;
   winner$ = this.gameService.winner$;
   verdict$ = this.gameService.verdict$;
 
@@ -14,5 +15,9 @@ export class AppComponent {
 
   resetGame() {
     this.gameService.resetGame();
+  }
+
+  resetGameBotFirst() {
+    this.gameService.resetGameBotFirst();
   }
 }

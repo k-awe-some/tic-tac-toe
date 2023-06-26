@@ -37,7 +37,7 @@ describe('AppComponent', () => {
     const resetButton = fixture.debugElement.query(
       By.css("button[data-test='reset-button']")
     )?.nativeElement;
-    expect(resetButton.textContent).toContain('Reset game');
+    expect(resetButton.textContent).toContain('Reset');
   });
 
   it('should call the resetGame method on GameService when reset button is clicked', () => {

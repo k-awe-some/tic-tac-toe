@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { areAllValuesPresent } from './game.util';
+import { areAllValuesPresent, getRandomItem } from './game.util';
 
 export enum Mark {
   X = 'X',
@@ -11,12 +11,14 @@ export enum Mark {
   providedIn: 'root',
 })
 export class GameService {
-  cells$ = new BehaviorSubject<(Mark | '')[]>([...Array(9).fill('')]);
-  verdict$ = new BehaviorSubject<string>('You are player X');
+  cells$ = new BehaviorSubject<(Mark | '')[]>([]);
+  verdict$ = new BehaviorSubject<string>('');
   isBotTurn$ = new BehaviorSubject<boolean>(false);
   winner$ = new BehaviorSubject<Mark | ''>('');
   winningLineResult$ = new BehaviorSubject<number[]>([]);
 
+  private firstMoveIndex: number | undefined;
+  private cornerIndexes = [0, 2, 6, 8];
   private winningLines = [
     [0, 1, 2],
     [3, 4, 5],
@@ -32,12 +34,22 @@ export class GameService {
     return this.cells$.value;
   }
 
+  resetGameBotFirst(): void {
+    this.resetProps();
+    this.registerBotMove();
+  }
+
   resetGame(): void {
+    this.resetProps();
+    this.verdict$.next('Your turn (X)');
+    this.isBotTurn$.next(false);
+  }
+
+  private resetProps() {
     this.cells$.next(Array(9).fill(''));
     this.winner$.next('');
-    this.verdict$.next('You are player X');
     this.winningLineResult$.next([]);
-    this.isBotTurn$.next(false);
+    this.cornerIndexes = [0, 2, 6, 8];
   }
 
   registerMove(index: number, value: Mark): void {
@@ -46,6 +58,16 @@ export class GameService {
       const updatedCells = [...this.cells];
       updatedCells[index] = value;
       this.cells$.next(updatedCells);
+
+      if (this.cornerIndexes.includes(index)) {
+        this.cornerIndexes = this.cornerIndexes.filter(
+          (item) => item !== index
+        );
+      }
+    }
+
+    if (!this.isBotTurn$.value && this.cells.filter(Boolean).length === 1) {
+      this.firstMoveIndex = this.cells.indexOf(value);
     }
 
     this.checkGameProgress(value);
@@ -81,7 +103,7 @@ export class GameService {
       this.registerMove(nextIndex, Mark.O);
       this.isBotTurn$.next(false);
 
-      if (!this.winner$.value) {
+      if (!this.winner$.value && !areAllValuesPresent(this.cells)) {
         this.verdict$.next('Your turn (X)');
       }
     }, 2000);
@@ -89,19 +111,38 @@ export class GameService {
 
   private getOptimalIndex(): number {
     return (
+      this.getSecondMoveIndex() ??
       this.getLastIndexOfNearWin(Mark.O) ??
       this.getLastIndexOfNearWin(Mark.X) ??
+      this.getRandomCornerIndex() ??
       this.getRandomizedIndex()
     );
+  }
+
+  private getSecondMoveIndex(): number | null {
+    if (this.firstMoveIndex !== undefined) {
+      const secondMoveIndex =
+        this.firstMoveIndex === 4 ? this.getRandomCornerIndex() : 4;
+      this.firstMoveIndex = undefined;
+      return secondMoveIndex;
+    }
+
+    return null;
+  }
+
+  private getRandomCornerIndex(): number | null {
+    const cornerIndex = getRandomItem(this.cornerIndexes);
+    this.cornerIndexes = this.cornerIndexes.filter(
+      (item) => item !== cornerIndex
+    );
+    return cornerIndex;
   }
 
   private getRandomizedIndex(): number {
     const emptyCellIndexes = this.cells
       .map((item, index) => !item && index)
       .filter(Boolean) as number[];
-    return emptyCellIndexes[
-      Math.floor(Math.random() * emptyCellIndexes.length)
-    ];
+    return getRandomItem(emptyCellIndexes) as number;
   }
 
   private getLastIndexOfNearWin(value: Mark): number | null {
