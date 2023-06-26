@@ -3,9 +3,10 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppComponent } from './app.component';
 import { GameGridComponent } from './game-grid/game-grid.component';
+import { ButtonComponent } from './shared/button/button.component';
 import { VerdictComponent } from './verdict/verdict.component';
 
-const COMPONENTS = [GameGridComponent, VerdictComponent];
+const COMPONENTS = [GameGridComponent, VerdictComponent, ButtonComponent];
 
 @NgModule({
   declarations: [AppComponent],

@@ -17,29 +17,16 @@
   *ngIf="!(cells$ | async)?.length; else resetButtons"
   class="w-3/5 sm:w-1/2 lg:w-1/3 xl:2xl:w-1/4 text-center ml-auto mr-auto mt-36 sm:mt-32 lg:mt-44"
 >
-  <button
-    data-test="reset-button"
-    (click)="resetGame()"
-    class="bg-yellow-300 text-rose-600 font-medium tracking-wider px-12 py-2 sm:py-3 w-full mt-6 sm:mt-9 text-lg sm:text-xl lg:text-2xl"
-    [ngClass]="{
-      'animate-bounce':
-        (winner$ | async) || (verdict$ | async)?.includes('draw')
-    }"
-  >
-    I want to go first!
-  </button>
-
-  <button
-    data-test="reset-button"
+  <app-button data-test="human-first-button" (click)="resetGame()">
+    I'll go first
+  </app-button>
+  <app-button
+    data-test="bot-first-button"
+    [primary]="true"
     (click)="resetGameBotFirst()"
-    class="border border-rose-600 text-rose-600 font-medium tracking-wider px-12 py-2 sm:py-3 w-full mt-6 sm:mt-9 text-lg sm:text-xl lg:text-2xl"
-    [ngClass]="{
-      'animate-bounce':
-        (winner$ | async) || (verdict$ | async)?.includes('draw')
-    }"
   >
-    I feel like being challenged!
-  </button>
+    I feel like being challenged
+  </app-button>
 </div>
 
 <ng-template #resetButtons>
@@ -50,28 +37,18 @@
 
     <app-game-grid></app-game-grid>
 
-    <button
-      data-test="reset-button"
-      (click)="resetGame()"
-      class="bg-yellow-300 text-rose-600 font-medium tracking-wider px-12 py-2 sm:py-3 w-full mt-6 sm:mt-9 text-lg sm:text-xl lg:text-2xl"
-      [ngClass]="{
-        'animate-bounce':
-          (winner$ | async) || (verdict$ | async)?.includes('draw')
-      }"
-    >
+    <app-button data-test="reset-human-first-button" (click)="resetGame()">
       Reset (You go first)
-    </button>
-
-    <button
-      data-test="reset-button"
+    </app-button>
+    <app-button
+      data-test="reset-bot-first-button"
+      [primary]="true"
       (click)="resetGameBotFirst()"
-      class="border border-rose-600 text-rose-600 font-medium tracking-wider px-12 py-2 sm:py-3 w-full mt-6 sm:mt-9 text-lg sm:text-xl lg:text-2xl"
-      [ngClass]="{
-        'animate-bounce':
-          (winner$ | async) || (verdict$ | async)?.includes('draw')
-      }"
+      [animateBounce]="
+        !!(winner$ | async) || !!(verdict$ | async)?.includes('draw')
+      "
     >
       Reset (Bot goes first)
-    </button>
+    </app-button>
   </div>
 </ng-template>
